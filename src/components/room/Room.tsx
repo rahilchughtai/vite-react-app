@@ -3,7 +3,7 @@ import * as Y from 'yjs';
 // @ts-ignore
 import { useState } from 'react';
 import { playerType } from '../../shared/model';
-import './style.css'
+import './style.css';
 interface RoomProps {
   roomCode: string;
   yDoc: Y.Doc | null;
@@ -86,6 +86,7 @@ const Room = ({ roomCode, yDoc, player }: RoomProps) => {
             {questions[index]}
           </p>
           <input
+            className="fragment-input"
             style={{ marginRight: '1em', marginBottom: '1em' }}
             onChange={(e) => setFragmentInput(e.target.value)}
           />

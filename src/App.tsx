@@ -40,17 +40,14 @@ function App() {
     <div className="App">
       <h2>Ray Sentence Game</h2>
       {room ? (
-        <Room
-          player={playerType}
-          yDoc={sharedDoc}
-
-          roomCode={roomCode}
-        />
+        <Room player={playerType} yDoc={sharedDoc} roomCode={roomCode} />
       ) : (
         <div>
           <button onClick={createRoom}>Create Room</button>
           <h3>OR</h3>
           <input
+          style={{fontSize:'.8em'}}
+            inputMode="numeric"
             type="text"
             placeholder="Enter Room Code"
             value={roomInput}
