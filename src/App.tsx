@@ -46,14 +46,16 @@ function App() {
           <button onClick={createRoom}>Create Room</button>
           <h3>OR</h3>
           <input
-          style={{fontSize:'.8em'}}
+            style={{ fontSize: '.8em', marginTop: '1em' }}
             inputMode="numeric"
             type="text"
             placeholder="Enter Room Code"
             value={roomInput}
             onChange={(e) => setRoomInput(e.target.value)}
           />
-          <button onClick={joinRoom}>Join Room</button>
+          <button style={{ marginTop: '1em' }} onClick={joinRoom}>
+            Join Room
+          </button>
         </div>
       )}
     </div>
