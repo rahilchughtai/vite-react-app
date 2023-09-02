@@ -3,7 +3,7 @@ import * as Y from 'yjs';
 // @ts-ignore
 import { useState } from 'react';
 import { playerType } from '../../shared/model';
-
+import './style.css'
 interface RoomProps {
   roomCode: string;
   yDoc: Y.Doc | null;
