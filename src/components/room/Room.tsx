@@ -1,20 +1,20 @@
 import * as Y from 'yjs';
-import { WebrtcProvider } from 'y-webrtc';
-import { useRef, useState } from 'react';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { useState } from 'react';
 import { playerType } from '../../shared/model';
 
 interface RoomProps {
   roomCode: string;
   yDoc: Y.Doc | null;
-  room: WebrtcProvider;
   player: playerType;
 }
 interface SentenceData {
   fragment: string;
   player: playerType;
 }
-const Room = ({ roomCode, yDoc, room, player }: RoomProps) => {
-  console.log(roomCode, yDoc, room);
+const Room = ({ roomCode, yDoc, player }: RoomProps) => {
+  console.log(roomCode, yDoc);
   const questions = [
     'Who?',
     'What are they doing?',
@@ -86,7 +86,7 @@ const Room = ({ roomCode, yDoc, room, player }: RoomProps) => {
             {questions[index]}
           </p>
           <input
-            style={{ marginRight: '1em', marginBottom:'1em' }}
+            style={{ marginRight: '1em', marginBottom: '1em' }}
             onChange={(e) => setFragmentInput(e.target.value)}
           />
           <button disabled={!myTurn || !fragmentInput} onClick={buttonAdd}>

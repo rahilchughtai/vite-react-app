@@ -10,7 +10,7 @@ function App() {
   const [roomInput, setRoomInput] = useState('');
   const rand = (4000 + Math.floor(Math.random() * 1000)).toString();
   const [roomCode, setRoomCode] = useState(rand.toString());
-  const [room, setRoom] = useState<WebrtcProvider | null>(null);
+  const [room, setRoom] = useState<any | null>(null);
   const [sharedDoc, setSharedDoc] = useState<Y.Doc | null>(null);
   const [playerType, setPlayerType] = useState<playerType>('host');
 
@@ -43,7 +43,7 @@ function App() {
         <Room
           player={playerType}
           yDoc={sharedDoc}
-          room={room}
+
           roomCode={roomCode}
         />
       ) : (
