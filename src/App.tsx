@@ -1,46 +1,65 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
-import * as Y from 'yjs';
-import { WebrtcProvider } from 'y-webrtc';
+import { socket } from './socket';
 
 import Room from './components/room/Room';
 import { playerType } from './shared/model';
 
 function App() {
+  const [isConnected, setIsConnected] = useState(socket.connected);
+  const [fooEvents, setFooEvents] = useState([]);
+
   const [roomInput, setRoomInput] = useState('');
-  const rand = (4000 + Math.floor(Math.random() * 1000)).toString();
-  const [roomCode, setRoomCode] = useState(rand.toString());
-  const [room, setRoom] = useState<any | null>(null);
-  const [sharedDoc, setSharedDoc] = useState<Y.Doc | null>(null);
+  const [roomCode, setRoomCode] = useState<number | null>(null);
   const [playerType, setPlayerType] = useState<playerType>('host');
+
+  useEffect(() => {
+    function onConnect() {
+      setIsConnected(true);
+    }
+
+    function onDisconnect() {
+      setIsConnected(false);
+    }
+
+    socket.on('connect', onConnect);
+    socket.on('disconnect', onDisconnect);
+
+    return () => {
+      socket.off('connect', onConnect);
+      socket.off('disconnect', onDisconnect);
+    };
+  }, []);
 
   // Function to create a new room
   const createRoom = async () => {
-    const ydoc = new Y.Doc();
-    const provider = new WebrtcProvider('sentence-game', ydoc, {
-      password: roomCode,
+    socket.emit('create-room', (response: any) => {
+      if (!response.success) {
+        return console.error(response.error);
+      }
+      setRoomCode(response.roomCode);
+      setPlayerType('host');
+      console.log(response);
     });
-    setSharedDoc(ydoc);
-    setRoom(provider);
   };
 
   // Function to join an existing room
   const joinRoom = async () => {
-    const ydoc = new Y.Doc();
-    const provider = new WebrtcProvider('sentence-game', ydoc, {
-      password: roomInput,
+    socket.emit('join-room', roomInput, (response: any) => {
+      if (!response.success) {
+        return console.error(response.error);
+      }
+      console.log(response);
+      setPlayerType('participant');
+      setRoomCode(response.roomCode);
     });
-    setRoomCode(roomInput);
-    setSharedDoc(ydoc);
-    setRoom(provider);
-    setPlayerType('participant');
   };
 
   return (
     <div className="App">
       <h2>Ray Sentence Game</h2>
-      {room ? (
-        <Room player={playerType} yDoc={sharedDoc} roomCode={roomCode} />
+      {roomCode ? (
+        <Room player={playerType} roomCode={roomCode} />
       ) : (
         <div>
           <button onClick={createRoom}>Create Room</button>
