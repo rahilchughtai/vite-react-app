@@ -7,7 +7,6 @@ import { playerType } from './shared/model';
 
 function App() {
   const [isConnected, setIsConnected] = useState(socket.connected);
-  const [fooEvents, setFooEvents] = useState([]);
 
   const [roomInput, setRoomInput] = useState('');
   const [roomCode, setRoomCode] = useState<number | null>(null);
@@ -15,6 +14,7 @@ function App() {
 
   useEffect(() => {
     function onConnect() {
+      console.log(isConnected)
       setIsConnected(true);
     }
 
@@ -29,10 +29,12 @@ function App() {
       socket.off('connect', onConnect);
       socket.off('disconnect', onDisconnect);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Function to create a new room
   const createRoom = async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     socket.emit('create-room', (response: any) => {
       if (!response.success) {
         return console.error(response.error);
@@ -45,7 +47,8 @@ function App() {
 
   // Function to join an existing room
   const joinRoom = async () => {
-    socket.emit('join-room', roomInput, (response: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    socket.emit('join-room', roomInput, (response:any) => {
       if (!response.success) {
         return console.error(response.error);
       }

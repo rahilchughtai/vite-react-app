@@ -50,6 +50,7 @@ const Room = ({ roomCode, player }: RoomProps) => {
       socket.off('player-join', onJoin);
       socket.off('fragment-added', onFragment);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const addFragment = (fragmentData: SentenceData) => {
