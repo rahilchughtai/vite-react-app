@@ -14,11 +14,12 @@ function App() {
 
   useEffect(() => {
     function onConnect() {
-      console.log(isConnected)
+      console.log('user connected');
       setIsConnected(true);
     }
 
     function onDisconnect() {
+      console.log('user disconnected');
       setIsConnected(false);
     }
 
@@ -29,7 +30,6 @@ function App() {
       socket.off('connect', onConnect);
       socket.off('disconnect', onDisconnect);
     };
-
   }, [isConnected]);
 
   // Function to create a new room
@@ -48,7 +48,7 @@ function App() {
   // Function to join an existing room
   const joinRoom = async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    socket.emit('join-room', roomInput, (response:any) => {
+    socket.emit('join-room', roomInput, (response: any) => {
       if (!response.success) {
         return console.error(response.error);
       }
@@ -60,7 +60,8 @@ function App() {
 
   return (
     <div className="App">
-      <h2>Ray Sentence Game</h2>
+      <h2>Ray Sentence Game </h2>
+      <p>{JSON.stringify(isConnected)}</p>
       {roomCode ? (
         <Room playerType={playerType} roomCode={roomCode} />
       ) : (
