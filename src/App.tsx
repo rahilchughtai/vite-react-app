@@ -29,8 +29,8 @@ function App() {
       socket.off('connect', onConnect);
       socket.off('disconnect', onDisconnect);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
+  }, [isConnected]);
 
   // Function to create a new room
   const createRoom = async () => {
