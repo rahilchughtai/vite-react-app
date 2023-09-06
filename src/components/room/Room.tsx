@@ -34,13 +34,13 @@ const Room = ({ roomCode, player }: RoomProps) => {
       setPlayerJoined(true);
     }
 
-    function onFragment(fragmentData: any) {
-      const { fragment, playerType } = fragmentData;
-      if (playerType === player) {
+    function onFragment(fragmentData: SentenceData) {
+      const { fragment, player: fragmentPlayer } = fragmentData;
+      if (fragmentPlayer === player) {
         return;
       }
       console.log('received fragment from other player!');
-      addFragment({ fragment, player: playerType });
+      addFragment({ fragment, player: fragmentPlayer });
     }
 
     socket.on('player-join', onJoin);
@@ -57,14 +57,6 @@ const Room = ({ roomCode, player }: RoomProps) => {
     setFragments((f) => [...f, { fragment, player: playerType }]);
   };
   const COLORS = ['magenta', 'cyan', '#79155B', '#C23373', '#F6635C'];
-
-  const getColor = (index: number) => {
-    const order = player === 'host' ? 0 : 1;
-    const myColors = COLORS.filter((_, index) => index % 2 === order);
-    console.log(order);
-
-    return myColors[index];
-  };
 
   const [fragmentInput, setFragmentInput] = useState('');
 
