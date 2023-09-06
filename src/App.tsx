@@ -62,7 +62,7 @@ function App() {
     <div className="App">
       <h2>Ray Sentence Game</h2>
       {roomCode ? (
-        <Room player={playerType} roomCode={roomCode} />
+        <Room playerType={playerType} roomCode={roomCode} />
       ) : (
         <div>
           <button onClick={createRoom}>Create Room</button>

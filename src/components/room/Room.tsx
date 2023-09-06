@@ -7,16 +7,15 @@ import { socket } from '../../socket';
 
 interface RoomProps {
   roomCode: number;
-
-  player: playerType;
+  playerType: playerType;
 }
 interface SentenceData {
   fragment: string;
-  player: playerType;
+  playerType: playerType;
 }
-const Room = ({ roomCode, player }: RoomProps) => {
+const Room = ({ roomCode, playerType }: RoomProps) => {
   const [fragments, setFragments] = useState<SentenceData[]>([]);
-  const [playerJoined, setPlayerJoined] = useState(player === 'participant');
+  const [playerJoined, setPlayerJoined] = useState(playerType === 'participant');
 
   const questions = [
     'Who?',
@@ -27,7 +26,7 @@ const Room = ({ roomCode, player }: RoomProps) => {
   ];
   const index = fragments.length;
   const finished = fragments.length === questions.length;
-  const isMyTurn = fragments.length % 2 === (player === 'host' ? 0 : 1);
+  const isMyTurn = fragments.length % 2 === (playerType === 'host' ? 0 : 1);
   useEffect(() => {
     function onJoin() {
       console.log('player joined!');
@@ -35,12 +34,12 @@ const Room = ({ roomCode, player }: RoomProps) => {
     }
 
     function onFragment(fragmentData: SentenceData) {
-      const { fragment, player: fragmentPlayer } = fragmentData;
-      if (fragmentPlayer === player) {
+      const { fragment, playerType:fragmentPlayer } = fragmentData;
+      if (fragmentPlayer === playerType) {
         return;
       }
       console.log('received fragment from other player!');
-      addFragment({ fragment, player: fragmentPlayer });
+      addFragment({ fragment, playerType: fragmentPlayer });
     }
 
     socket.on('player-join', onJoin);
@@ -54,16 +53,16 @@ const Room = ({ roomCode, player }: RoomProps) => {
   }, []);
 
   const addFragment = (fragmentData: SentenceData) => {
-    const { fragment, player: playerType } = fragmentData;
-    setFragments((f) => [...f, { fragment, player: playerType }]);
+    const { fragment,  playerType } = fragmentData;
+    setFragments((f) => [...f, { fragment,  playerType }]);
   };
   const COLORS = ['magenta', 'cyan', '#79155B', '#C23373', '#F6635C'];
 
   const [fragmentInput, setFragmentInput] = useState('');
 
   const buttonAdd = () => {
-    addFragment({ fragment: fragmentInput, player: player });
-    socket.emit('fragment-send', roomCode, fragmentInput, player);
+    addFragment({ fragment: fragmentInput, playerType });
+    socket.emit('fragment-send', roomCode, fragmentInput, playerType);
   };
 
   const resetClick = () => {
@@ -71,7 +70,7 @@ const Room = ({ roomCode, player }: RoomProps) => {
   };
   return (
     <>
-      <h5>You are a {player}</h5>
+      <h5>You are a {playerType}</h5>
       <h5>
         Your Room Code: <span style={{ color: 'magenta' }}> {roomCode} </span>{' '}
       </h5>
@@ -82,7 +81,7 @@ const Room = ({ roomCode, player }: RoomProps) => {
             <h3>Your words:</h3>
 
             {fragments
-              .filter((frag) => frag.player === player)
+              .filter((frag) => frag.playerType === playerType)
               .map((frags) => (
                 <p>{frags.fragment}</p>
               ))}

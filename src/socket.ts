@@ -4,3 +4,4 @@ import { io } from 'socket.io-client';
 const URL = 'https://sentence-socketio.adaptable.app';
 
 export const socket = io(URL);
+ 
