@@ -61,7 +61,7 @@ function App() {
   return (
     <div className="App">
       <h2>Ray Sentence Game </h2>
-      <p>{JSON.stringify(isConnected)}</p>
+      <p>Connected: {JSON.stringify(isConnected)}</p>
       {roomCode ? (
         <Room playerType={playerType} roomCode={roomCode} />
       ) : (
